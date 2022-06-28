@@ -1,5 +1,5 @@
 [GLOBAL]
-pants_version = "2.11.0"
+pants_version = "2.14.0.dev0"
 colors = true
 process_execution_local_parallelism = 4
 
@@ -7,7 +7,15 @@ plugins = [
   "packaging==21.3",
 ]
 
+pants_ignore = [
+  ".*/",
+  "/dist/",
+  "/src/python/arcor2_kinect_azure"
+]
+
 backend_packages.add = [
+  "pants.backend.docker",
+  "pants.backend.docker.lint.hadolint",
   "pants.backend.python",
   "pants.backend.python.lint.black",
   "pants.backend.python.lint.flake8",
@@ -85,7 +93,6 @@ extra_env_vars = ["PYTHONDEVMODE=1"]  # "PYTHONWARNINGS=error" not useable due t
 
 [python-infer]
 imports = true
-inits = true
 
 [setup-py-generation]
 first_party_dependency_version_scheme = "compatible"
@@ -93,3 +100,6 @@ first_party_dependency_version_scheme = "compatible"
 [anonymous-telemetry]
 enabled = true
 repo_id = "394a3b7c-1c30-4047-b53e-90e5df3d84a9"
+
+[docker]
+build_args = ["VERSION"]

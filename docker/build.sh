@@ -9,20 +9,24 @@ build_base_image () {
 }
 
 build_dist_base_image () {
-        docker pull python:"$PYTHON_VERSION"
-	docker build -f Dockerfile-dist-base -t arcor2/arcor2_dist_base:"$VERSION"  ../ --build-arg version="$PYTHON_VERSION"
+    #    docker pull python:"$PYTHON_VERSION"
+	#docker build -f Dockerfile-dist-base -t arcor2/arcor2_dist_base:"$VERSION"  ../ --build-arg version="$PYTHON_VERSION"
+	VERSION="latest" ./pants package docker:dist-base
 }
 
 build_arserver_image () {
-	docker build -f Dockerfile-arserver -t arcor2/arcor2_arserver:"$(cat ../src/python/arcor2_arserver/VERSION)"  ../ --build-arg version="$VERSION"
+	#docker build -f Dockerfile-arserver -t arcor2/arcor2_arserver:"$(cat ../src/python/arcor2_arserver/VERSION)"  ../ --build-arg version="$VERSION"
+	VERSION=$(cat src/python/arcor2_arserver/VERSION) ./pants package docker:arserver
 }
 
 build_build_image () {
-	docker build -f Dockerfile-build -t arcor2/arcor2_build:"$(cat ../src/python/arcor2_build/VERSION)" --build-arg version="$VERSION" ../
+	#docker build -f Dockerfile-build -t arcor2/arcor2_build:"$(cat ../src/python/arcor2_build/VERSION)" --build-arg version="$VERSION" ../
+	VERSION=$(cat src/python/arcor2_build/VERSION) ./pants package docker:build
 }
 
 build_execution_image () {
-	docker build -f Dockerfile-execution -t arcor2/arcor2_execution:"$(cat ../src/python/arcor2_execution/VERSION)" --build-arg version="$VERSION" ../
+	#docker build -f Dockerfile-execution -t arcor2/arcor2_execution:"$(cat ../src/python/arcor2_execution/VERSION)" --build-arg version="$VERSION" ../
+	VERSION=$(cat src/python/arcor2_execution/VERSION) ./pants package docker:execution
 }
 
 build_kinect_azure () {
@@ -34,7 +38,8 @@ build_execution_proxy_image () {
 }
 
 build_mocks_image () {
-	docker build -f Dockerfile-mocks -t arcor2/arcor2_mocks:"$(cat ../src/python/arcor2_mocks/VERSION)" --build-arg version="$VERSION" ../
+	#docker build -f Dockerfile-mocks -t arcor2/arcor2_mocks:"$(cat ../src/python/arcor2_mocks/VERSION)" --build-arg version="$VERSION" ../
+	VERSION=$(cat src/python/arcor2_mocks/VERSION) ./pants package docker:mocks
 }
 
 build_devel_image () {
@@ -42,7 +47,8 @@ build_devel_image () {
 }
 
 build_upload_fit_demo_image () {
-	docker build -f Dockerfile-upload-fit-demo -t arcor2/arcor2_upload_fit_demo:"$(cat ../src/python/arcor2_fit_demo/VERSION)" --build-arg version="$VERSION" ../
+	#docker build -f Dockerfile-upload-fit-demo -t arcor2/arcor2_upload_fit_demo:"$(cat ../src/python/arcor2_fit_demo/VERSION)" --build-arg version="$VERSION" ../
+	VERSION=$(cat src/python/arcor2_fit_demo/VERSION) ./pants package docker:upload_fit_demo
 }
 
 build_upload_builtin_objects_image () {
@@ -50,11 +56,13 @@ build_upload_builtin_objects_image () {
 }
 
 build_dobot_image () {
-	docker build -f Dockerfile-dobot -t arcor2/arcor2_dobot:"$(cat ../src/python/arcor2_dobot/VERSION)" --build-arg version="$VERSION" ../
+	#docker build -f Dockerfile-dobot -t arcor2/arcor2_dobot:"$(cat ../src/python/arcor2_dobot/VERSION)" --build-arg version="$VERSION" ../
+	VERSION=$(cat src/python/arcor2_dobot/VERSION) ./pants package docker:dobot
 }
 
 build_calibration_image () {
-	docker build -f Dockerfile-calibration -t arcor2/arcor2_calibration:"$(cat ../src/python/arcor2_calibration/VERSION)" --build-arg version="$VERSION" ../
+	#docker build -f Dockerfile-calibration -t arcor2/arcor2_calibration:"$(cat ../src/python/arcor2_calibration/VERSION)" --build-arg version="$VERSION" ../
+	VERSION=$(cat src/python/arcor2_calibration/VERSION) ./pants package docker:calibration
 }
 
 build_fanuc_image () {
@@ -94,10 +102,10 @@ fi
 
 VERSION="$1"
 
-if [ $# -eq 1 ]; then
-	build_base_image
-	exit 0
-fi
+#if [ $# -eq 1 ]; then
+#	build_base_image
+#	exit 0
+#fi
 
 build_dist_base_image
 
